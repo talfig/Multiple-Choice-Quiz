@@ -1,0 +1,10 @@
+What is the capital of France?
+Paris
+London
+Rome
+Berlin
+What is 2 + 2?
+4
+3
+5
+6
