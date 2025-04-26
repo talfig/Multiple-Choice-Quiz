@@ -1,6 +1,7 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.event.ActionEvent;
 import javafx.scene.text.FontWeight;
@@ -15,14 +16,16 @@ public class QuizController {
 
     private List<Question> questions = new ArrayList<>();
     private final Map<Question, ToggleGroup> questionToggleMap = new HashMap<>();
+    private final Map<Question, Label> questionStatusLabels = new HashMap<>();
 
     @FXML
     public void initialize() {
         questions = loadQuestionsFromFile("src/questions.txt");
-        Collections.shuffle(questions);  // Randomize questions
+        Collections.shuffle(questions); // Randomize questions
 
         for (Question q : questions) {
             VBox questionItem = new VBox(5);
+
             Label questionLabel = new Label(q.getQuestion());
             questionLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
             questionItem.getChildren().add(questionLabel);
@@ -34,12 +37,17 @@ public class QuizController {
             ToggleGroup group = new ToggleGroup();
             questionToggleMap.put(q, group);
 
-            // Add shuffled answers as radio buttons
             for (String answer : shuffledAnswers) {
                 RadioButton rb = new RadioButton(answer);
                 rb.setToggleGroup(group);
                 questionItem.getChildren().add(rb);
             }
+
+            // Add status label
+            Label statusLabel = new Label();
+            statusLabel.setFont(Font.font("System", 12));
+            questionItem.getChildren().add(statusLabel);
+            questionStatusLabels.put(q, statusLabel);
 
             questionBox.getChildren().add(questionItem);
         }
@@ -51,12 +59,22 @@ public class QuizController {
 
         for (Question q : questions) {
             ToggleGroup group = questionToggleMap.get(q);
+            Label statusLabel = questionStatusLabels.get(q);
+
             if (group.getSelectedToggle() != null) {
                 RadioButton selected = (RadioButton) group.getSelectedToggle();
                 String selectedText = selected.getText();
                 if (q.getCorrectAnswer().equals(selectedText)) {
                     score++;
+                    statusLabel.setText("✔ Correct");
+                    statusLabel.setTextFill(Color.GREEN);
+                } else {
+                    statusLabel.setText("✖ Incorrect");
+                    statusLabel.setTextFill(Color.RED);
                 }
+            } else {
+                statusLabel.setText("✖ No Answer Selected");
+                statusLabel.setTextFill(Color.RED);
             }
         }
 
@@ -73,13 +91,15 @@ public class QuizController {
 
     @FXML
     private void handleReset(ActionEvent event) {
-        questionBox.getChildren().clear(); // Clear existing questions
-        questionToggleMap.clear(); // Clear the toggle group map
+        questionBox.getChildren().clear();
+        questionToggleMap.clear();
+        questionStatusLabels.clear();
 
         Collections.shuffle(questions); // Shuffle the questions again
 
         for (Question q : questions) {
             VBox questionItem = new VBox(5);
+
             Label questionLabel = new Label(q.getQuestion());
             questionLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
             questionItem.getChildren().add(questionLabel);
@@ -95,6 +115,12 @@ public class QuizController {
                 rb.setToggleGroup(group);
                 questionItem.getChildren().add(rb);
             }
+
+            // Add status label
+            Label statusLabel = new Label();
+            statusLabel.setFont(Font.font("System", 12));
+            questionItem.getChildren().add(statusLabel);
+            questionStatusLabels.put(q, statusLabel);
 
             questionBox.getChildren().add(questionItem);
         }
