@@ -8,7 +8,7 @@ public class Quiz extends Application {
     private static final int QUIZ_WIDTH_SIZE = 600;
     private static final int QUIZ_HEIGHT_SIZE = 800;
 
-    public void start(Stage stage) throws Exception{
+    public void start(Stage stage) throws Exception {
         Parent root = (Parent) FXMLLoader.load(getClass().getResource("quiz.fxml"));
         Scene scene = new Scene(root, QUIZ_WIDTH_SIZE, QUIZ_HEIGHT_SIZE);
         stage.setTitle("Quiz");
