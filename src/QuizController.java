@@ -10,7 +10,6 @@ import java.io.*;
 import java.util.*;
 
 public class QuizController {
-
     @FXML
     private VBox questionBox;
 
