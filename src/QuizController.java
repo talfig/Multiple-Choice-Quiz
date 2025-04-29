@@ -19,7 +19,10 @@ public class QuizController {
 
     @FXML
     public void initialize() {
-        questions = loadQuestionsFromFile("src/questions.txt");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the path to the questions file:");
+        String filePath = scanner.nextLine();
+        questions = loadQuestionsFromFile(filePath);
         Collections.shuffle(questions); // Randomize questions
 
         for (Question q : questions) {
