@@ -22,7 +22,7 @@ public class QuizController {
 
     /**
      * Called automatically when the FXML file is loaded.
-     * Loads questions from a file provided via standard input and dynamically generates UI components.
+     * Loads questions from a file.
      */
     @FXML
     public void initialize() {
