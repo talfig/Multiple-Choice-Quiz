@@ -189,7 +189,7 @@ public class QuizController {
                 loadedQuestions.add(new Question(line, answers, correctAnswer));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
         }
         return loadedQuestions;
     }
