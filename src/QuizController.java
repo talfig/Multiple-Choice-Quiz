@@ -9,14 +9,22 @@ import javafx.scene.text.FontWeight;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Controller class for handling the logic of a multiple-choice quiz application using JavaFX.
+ */
 public class QuizController {
+
     @FXML
-    private VBox questionBox;
+    private VBox questionBox; // Container for displaying quiz questions dynamically.
 
-    private List<Question> questions = new ArrayList<>();
-    private final Map<Question, ToggleGroup> questionToggleMap = new HashMap<>();
-    private final Map<Question, Label> questionStatusLabels = new HashMap<>();
+    private List<Question> questions = new ArrayList<>(); // Holds the list of questions.
+    private final Map<Question, ToggleGroup> questionToggleMap = new HashMap<>(); // Maps each question to its corresponding group of answer options.
+    private final Map<Question, Label> questionStatusLabels = new HashMap<>(); // Maps each question to its status label (correct/incorrect).
 
+    /**
+     * Called automatically when the FXML file is loaded.
+     * Loads questions from a file provided via standard input and dynamically generates UI components.
+     */
     @FXML
     public void initialize() {
         Scanner scanner = new Scanner(System.in);
@@ -28,11 +36,12 @@ public class QuizController {
         for (Question q : questions) {
             VBox questionItem = new VBox(5);
 
+            // Display question text
             Label questionLabel = new Label(q.getQuestion());
             questionLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
             questionItem.getChildren().add(questionLabel);
 
-            // Shuffle the answers while ensuring the correct answer is preserved
+            // Shuffle and display answer options
             List<String> shuffledAnswers = new ArrayList<>(q.getAnswers());
             Collections.shuffle(shuffledAnswers);
 
@@ -45,7 +54,7 @@ public class QuizController {
                 questionItem.getChildren().add(rb);
             }
 
-            // Add status label
+            // Add label for answer status (e.g., correct, incorrect)
             Label statusLabel = new Label();
             statusLabel.setFont(Font.font("System", 12));
             questionItem.getChildren().add(statusLabel);
@@ -55,6 +64,11 @@ public class QuizController {
         }
     }
 
+    /**
+     * Handles the submission of the quiz.
+     * Evaluates selected answers, updates status labels, shows total score, and resets the quiz.
+     * @param event the action event triggered by clicking the "Submit" button.
+     */
     @FXML
     private void handleSubmit(ActionEvent event) {
         int score = 0;
@@ -87,10 +101,15 @@ public class QuizController {
         alert.setContentText(score + " out of " + questions.size());
         alert.showAndWait();
 
-        // After pressing OK, reset the quiz
+        // Reset quiz after displaying result
         handleReset(null);
     }
 
+    /**
+     * Resets the quiz to its initial state by clearing the current UI
+     * and regenerating the question and answer components.
+     * @param event the action event triggered by clicking the "Reset" button or after submission.
+     */
     @FXML
     private void handleReset(ActionEvent event) {
         questionBox.getChildren().clear();
@@ -118,7 +137,6 @@ public class QuizController {
                 questionItem.getChildren().add(rb);
             }
 
-            // Add status label
             Label statusLabel = new Label();
             statusLabel.setFont(Font.font("System", 12));
             questionItem.getChildren().add(statusLabel);
@@ -128,6 +146,19 @@ public class QuizController {
         }
     }
 
+    /**
+     * Loads questions from a specified text file.
+     * The format of the file must be:
+     * Question (line 1)
+     * Correct answer (line 2)
+     * Incorrect answer 1 (line 3)
+     * Incorrect answer 2 (line 4)
+     * Incorrect answer 3 (line 5)
+     * (Repeat for each question block)
+     *
+     * @param filename the path to the question file
+     * @return a list of parsed Question objects
+     */
     private List<Question> loadQuestionsFromFile(String filename) {
         List<Question> loadedQuestions = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
