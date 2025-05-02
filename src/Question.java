@@ -4,14 +4,9 @@ import java.util.List;
  * Represents a quiz question with its possible answers and the correct answer.
  */
 public class Question {
-    /** The text of the question */
-    private final String question;
-
-    /** List of possible answers including the correct one */
-    private final List<String> answers;
-
-    /** The correct answer to the question */
-    private final String correctAnswer;
+    private final String question; // The text of the question
+    private final List<String> answers; // List of possible answers including the correct one
+    private final String correctAnswer; // The correct answer to the question
 
     /**
      * Constructs a new Question object.

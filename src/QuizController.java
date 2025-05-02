@@ -13,7 +13,6 @@ import java.util.*;
  * Controller class for handling the logic of a multiple-choice quiz application using JavaFX.
  */
 public class QuizController {
-
     @FXML
     private VBox questionBox; // Container for displaying quiz questions dynamically.
 
